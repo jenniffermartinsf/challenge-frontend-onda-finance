@@ -1,0 +1,207 @@
+import type { FormEvent } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle, SendHorizonal } from "lucide-react";
+import { useForm } from "react-hook-form";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useTransfer } from "@/features/transfer/hooks/use-transfer";
+import {
+  transferSchema,
+  type TransferFormValues,
+} from "@/features/transfer/schemas/transfer-schema";
+import { getApiErrorMessage } from "@/lib/axios";
+import { formatCurrency } from "@/lib/utils";
+
+type TransferFormProps = {
+  availableBalance: number;
+};
+
+export function TransferForm({ availableBalance }: TransferFormProps) {
+  const transferMutation = useTransfer();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<TransferFormValues>({
+    resolver: zodResolver(transferSchema),
+    defaultValues: {
+      recipientName: "",
+      accountNumber: "",
+      amount: 0,
+      description: "",
+    },
+  });
+
+  async function onSubmit(values: TransferFormValues) {
+    await transferMutation.mutateAsync(transferSchema.parse(values));
+    reset();
+  }
+
+  function handleTransferSubmit(event: FormEvent<HTMLFormElement>) {
+    void handleSubmit(onSubmit)(event);
+  }
+
+  return (
+    <Card className="rounded-[2rem] border border-white/80 bg-white/92 shadow-[0_30px_80px_-55px_rgba(15,23,42,0.45)] backdrop-blur">
+      <CardHeader className="border-b border-slate-100 pb-4">
+        <CardTitle className="text-xl text-slate-950">
+          Dados da transferência
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6 p-6">
+        <div className="rounded-[1.6rem] border border-teal-100 bg-teal-50 p-4 text-sm text-teal-950">
+          <p className="font-medium">Saldo disponível</p>
+          <p className="mt-2 text-2xl font-semibold">
+            {formatCurrency(availableBalance)}
+          </p>
+        </div>
+
+        <form className="space-y-5" noValidate onSubmit={handleTransferSubmit}>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="recipientName">Nome do destinatário</Label>
+              <Input
+                aria-describedby={
+                  errors.recipientName ? "recipientName-error" : undefined
+                }
+                aria-invalid={Boolean(errors.recipientName)}
+                className="h-11 rounded-xl border-slate-200 bg-white"
+                id="recipientName"
+                placeholder="Ana Souza"
+                {...register("recipientName")}
+              />
+              {errors.recipientName ? (
+                <p
+                  className="text-sm text-destructive"
+                  id="recipientName-error"
+                  role="alert"
+                >
+                  {errors.recipientName.message}
+                </p>
+              ) : null}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="accountNumber">Conta destino</Label>
+              <Input
+                aria-describedby={
+                  errors.accountNumber ? "accountNumber-error" : undefined
+                }
+                aria-invalid={Boolean(errors.accountNumber)}
+                className="h-11 rounded-xl border-slate-200 bg-white"
+                id="accountNumber"
+                inputMode="numeric"
+                placeholder="12345678"
+                {...register("accountNumber")}
+              />
+              {errors.accountNumber ? (
+                <p
+                  className="text-sm text-destructive"
+                  id="accountNumber-error"
+                  role="alert"
+                >
+                  {errors.accountNumber.message}
+                </p>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="amount">Valor</Label>
+            <Input
+              aria-describedby={errors.amount ? "amount-error" : "amount-hint"}
+              aria-invalid={Boolean(errors.amount)}
+              className="h-11 rounded-xl border-slate-200 bg-white"
+              id="amount"
+              min="0"
+              placeholder="250.00"
+              step="0.01"
+              type="number"
+              {...register("amount")}
+            />
+            {errors.amount ? (
+              <p
+                className="text-sm text-destructive"
+                id="amount-error"
+                role="alert"
+              >
+                {errors.amount.message}
+              </p>
+            ) : (
+              <p className="text-sm text-slate-500" id="amount-hint">
+                Transferências mock são validadas também no servidor simulado.
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">Descrição opcional</Label>
+            <Textarea
+              aria-describedby={
+                errors.description ? "description-error" : "description-hint"
+              }
+              aria-invalid={Boolean(errors.description)}
+              className="rounded-xl border-slate-200 bg-white"
+              id="description"
+              placeholder="Ex.: Reserva para a viagem de maio"
+              {...register("description")}
+            />
+            {errors.description ? (
+              <p
+                className="text-sm text-destructive"
+                id="description-error"
+                role="alert"
+              >
+                {errors.description.message}
+              </p>
+            ) : (
+              <p className="text-sm text-slate-500" id="description-hint">
+                Esta informação aparece no histórico para facilitar a
+                conferência.
+              </p>
+            )}
+          </div>
+
+          {transferMutation.error ? (
+            <div
+              className="rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+              role="alert"
+            >
+              {getApiErrorMessage(
+                transferMutation.error,
+                "Não foi possível enviar a transferência.",
+              )}
+            </div>
+          ) : null}
+
+          <Button
+            className="h-11 w-full rounded-xl bg-slate-950 text-white hover:bg-slate-800"
+            disabled={transferMutation.isPending}
+            type="submit"
+          >
+            {transferMutation.isPending ? (
+              <>
+                <LoaderCircle
+                  className="size-4 animate-spin"
+                  aria-hidden="true"
+                />
+                Processando transferência...
+              </>
+            ) : (
+              <>
+                <SendHorizonal className="size-4" aria-hidden="true" />
+                Concluir transferência
+              </>
+            )}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
