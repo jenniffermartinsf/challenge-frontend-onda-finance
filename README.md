@@ -1,73 +1,57 @@
-# React + TypeScript + Vite
+# Onda Finance Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Webapp para o teste técnico com foco em clareza, UX limpa, consistência visual, validação correta e fluxo funcionando de ponta a ponta.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19 + Vite
+- TypeScript
+- React Router
+- TanStack Query
+- Zustand
+- React Hook Form + Zod
+- Tailwind CSS + shadcn/ui
+- Vitest + Testing Library
+- ESLint + Prettier
 
-## React Compiler
+## Scripts
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `npm run dev`
+- `npm run build`
+- `npm run lint`
+- `npm run lint:fix`
+- `npm run format`
+- `npm run format:check`
+- `npm run test`
+- `npm run test:run`
 
-## Expanding the ESLint configuration
+## Decisões técnicas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- O app usa uma mock API baseada em adapter do Axios para manter o consumo parecido com um backend real sem acoplar a UI a `fetch` solto.
+- O estado de autenticação fica em Zustand com persistência em `sessionStorage`, evitando armazenar senha e reduzindo exposição desnecessária.
+- O dashboard usa React Query para cache e invalidação automática após a transferência.
+- A transferência usa RHF + Zod para validação em camadas: cliente e servidor mock.
+- O layout prioriza responsividade mobile-first, contraste consistente, semântica correta e navegação por teclado.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Fluxo implementado
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Login mock com credenciais já preenchidas para facilitar avaliação.
+- Dashboard com saldo, entradas, saídas e histórico recente.
+- Transferência com validação e atualização do dashboard sem refresh manual.
+- Teste cobrindo o fluxo principal de login + transferência + invalidação.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Segurança
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Nenhum uso de `any`.
+- Nenhum uso de `dangerouslySetInnerHTML`.
+- Senha nunca é persistida no store.
+- Inputs sensíveis são validados com Zod antes de chegar à camada mock.
+- A transferência bloqueia saldo insuficiente e impede envio para a própria conta autenticada.
+- ESLint inclui verificação type-aware e regras de acessibilidade.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Melhorias futuras
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Adicionar testes de acessibilidade automatizados com `axe`.
+- Evoluir a mock API para um backend real.
+- Criar componentes adicionais do design system para formulários complexos.
+- Cobrir cenários de erro e loading com testes mais granulares.
