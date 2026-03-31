@@ -1,4 +1,4 @@
-import { ArrowDownLeft, ArrowUpRight, Clock3 } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Clock3 } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Transaction } from "@/features/dashboard/types";
@@ -41,9 +41,9 @@ export function TransactionList({ transactions }: TransactionListProps) {
                       )}
                     >
                       {isCredit ? (
-                        <ArrowDownLeft className="size-5" aria-hidden="true" />
-                      ) : (
                         <ArrowUpRight className="size-5" aria-hidden="true" />
+                      ) : (
+                        <ArrowDownRight className="size-5" aria-hidden="true" />
                       )}
                     </div>
                     <div>
