@@ -39,8 +39,12 @@ export function TransferForm({ availableBalance }: TransferFormProps) {
   });
 
   async function onSubmit(values: TransferFormValues) {
-    await transferMutation.mutateAsync(transferSchema.parse(values));
-    reset();
+    try {
+      await transferMutation.mutateAsync(transferSchema.parse(values));
+      reset();
+    } catch {
+      return;
+    }
   }
 
   function handleTransferSubmit(event: FormEvent<HTMLFormElement>) {
@@ -48,14 +52,14 @@ export function TransferForm({ availableBalance }: TransferFormProps) {
   }
 
   return (
-    <Card className="rounded-[2rem] border border-white/80 bg-white/92 shadow-[0_30px_80px_-55px_rgba(15,23,42,0.45)] backdrop-blur">
+    <Card className="rounded-[2rem] border border-white/80 bg-white/92 shadow-[0_30px_80px_-55px_rgba(15,23,42,0.45)] backdrop-blur transition-colors dark:border-white/10 dark:bg-slate-950/85 dark:shadow-[0_25px_70px_-45px_rgba(2,6,23,0.95)]">
       <CardHeader className="border-b border-slate-100 pb-4">
         <CardTitle className="text-xl text-slate-950">
           Dados da transferência
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6 p-6">
-        <div className="rounded-[1.6rem] border border-teal-100 bg-teal-50 p-4 text-sm text-teal-950">
+        <div className="rounded-[1.6rem] border border-teal-100 bg-teal-50 p-4 text-sm text-teal-950 dark:border-teal-400/15 dark:bg-teal-400/10 dark:text-teal-100">
           <p className="font-medium">Saldo disponível</p>
           <p className="mt-2 text-2xl font-semibold">
             {formatCurrency(availableBalance)}
@@ -71,7 +75,7 @@ export function TransferForm({ availableBalance }: TransferFormProps) {
                   errors.recipientName ? "recipientName-error" : undefined
                 }
                 aria-invalid={Boolean(errors.recipientName)}
-                className="h-11 rounded-xl border-slate-200 bg-white"
+                className="h-11 rounded-xl border-slate-200 bg-white dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-50"
                 id="recipientName"
                 placeholder="Ana Souza"
                 {...register("recipientName")}
@@ -94,7 +98,7 @@ export function TransferForm({ availableBalance }: TransferFormProps) {
                   errors.accountNumber ? "accountNumber-error" : undefined
                 }
                 aria-invalid={Boolean(errors.accountNumber)}
-                className="h-11 rounded-xl border-slate-200 bg-white"
+                className="h-11 rounded-xl border-slate-200 bg-white dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-50"
                 id="accountNumber"
                 inputMode="numeric"
                 placeholder="12345678"
@@ -117,7 +121,7 @@ export function TransferForm({ availableBalance }: TransferFormProps) {
             <Input
               aria-describedby={errors.amount ? "amount-error" : "amount-hint"}
               aria-invalid={Boolean(errors.amount)}
-              className="h-11 rounded-xl border-slate-200 bg-white"
+              className="h-11 rounded-xl border-slate-200 bg-white dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-50"
               id="amount"
               min="0"
               placeholder="250.00"
@@ -147,7 +151,7 @@ export function TransferForm({ availableBalance }: TransferFormProps) {
                 errors.description ? "description-error" : "description-hint"
               }
               aria-invalid={Boolean(errors.description)}
-              className="rounded-xl border-slate-200 bg-white"
+              className="rounded-xl border-slate-200 bg-white dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-50"
               id="description"
               placeholder="Ex.: Reserva para a viagem de maio"
               {...register("description")}
@@ -181,7 +185,7 @@ export function TransferForm({ availableBalance }: TransferFormProps) {
           ) : null}
 
           <Button
-            className="h-11 w-full rounded-xl bg-slate-950 text-white hover:bg-slate-800"
+            className="h-11 w-full rounded-xl bg-slate-950 text-white hover:bg-slate-800 dark:bg-teal-300 dark:text-slate-950 dark:hover:bg-teal-200"
             disabled={transferMutation.isPending}
             type="submit"
           >
