@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertTriangle, LoaderCircle, SendHorizonal } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -76,7 +76,6 @@ export function TransferForm({
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
   } = useForm<TransferFormValues>({
     resolver: zodResolver(transferSchema),
     defaultValues: {
@@ -87,32 +86,11 @@ export function TransferForm({
     },
   });
 
-  const watchedValues = watch([
-    "recipientName",
-    "accountNumber",
-    "amount",
-    "description",
-  ]);
-
-  useEffect(() => {
-    if (!duplicateWarning) {
-      return;
-    }
-
-    const [recipientName, accountNumber, amount, description] = watchedValues;
-
-    const hasChanged =
-      normalizeText(String(recipientName ?? "")) !==
-        normalizeText(duplicateWarning.payload.recipientName) ||
-      String(accountNumber ?? "").trim() !== duplicateWarning.payload.accountNumber ||
-      Number(amount ?? 0) !== duplicateWarning.payload.amount ||
-      String(description ?? "").trim() !==
-        (duplicateWarning.payload.description ?? "");
-
-    if (hasChanged) {
+  function handleFieldChange() {
+    if (duplicateWarning) {
       setDuplicateWarning(null);
     }
-  }, [duplicateWarning, watchedValues]);
+  }
 
   async function executeTransfer(payload: TransferPayload) {
     try {
@@ -219,7 +197,9 @@ export function TransferForm({
                 className="h-11 rounded-xl border-slate-200 bg-white dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-50"
                 id="recipientName"
                 placeholder="Ana Souza"
-                {...register("recipientName")}
+                {...register("recipientName", {
+                  onChange: handleFieldChange,
+                })}
               />
               {errors.recipientName ? (
                 <p
@@ -243,7 +223,9 @@ export function TransferForm({
                 id="accountNumber"
                 inputMode="numeric"
                 placeholder="12345678"
-                {...register("accountNumber")}
+                {...register("accountNumber", {
+                  onChange: handleFieldChange,
+                })}
               />
               {errors.accountNumber ? (
                 <p
@@ -268,7 +250,9 @@ export function TransferForm({
               placeholder="250.00"
               step="0.01"
               type="number"
-              {...register("amount")}
+              {...register("amount", {
+                onChange: handleFieldChange,
+              })}
             />
             {errors.amount ? (
               <p
@@ -298,7 +282,9 @@ export function TransferForm({
               className="rounded-xl border-slate-200 bg-white dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-50"
               id="description"
               placeholder="Ex.: Reserva para a viagem de maio"
-              {...register("description")}
+              {...register("description", {
+                onChange: handleFieldChange,
+              })}
             />
             {errors.description ? (
               <p

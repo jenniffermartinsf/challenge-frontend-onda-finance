@@ -66,24 +66,24 @@ export function AppShell() {
 
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#f7f8fb_0%,#eef4f6_42%,#f9fafb_100%)] transition-colors dark:bg-[linear-gradient(180deg,#07111b_0%,#0d1724_42%,#050b12_100%)]">
-      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-        <div className="grid gap-4 lg:grid-cols-[280px_minmax(0,1fr)]">
-          <aside className="rounded-[2rem] border border-white/80 bg-white/90 p-5 shadow-[0_25px_70px_-45px_rgba(15,23,42,0.5)] backdrop-blur transition-colors dark:border-white/10 dark:bg-slate-950/85 dark:shadow-[0_25px_80px_-45px_rgba(2,6,23,0.9)] lg:sticky lg:top-8 lg:h-[calc(100vh-4rem)]">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-teal-700 dark:text-teal-300">
-                  Onda Finance
-                </p>
-                <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
-                  Painel pessoal
-                </h2>
-              </div>
-              <div className="rounded-2xl bg-teal-50 p-3 text-teal-700 dark:bg-teal-400/10 dark:text-teal-200">
-                <CreditCard className="size-5" aria-hidden="true" />
-              </div>
+      <aside className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-20 lg:flex lg:w-[312px] lg:flex-col lg:border-r lg:border-slate-200/80 lg:bg-white/92 lg:px-6 lg:py-8 lg:backdrop-blur lg:transition-colors lg:shadow-[18px_0_48px_-42px_rgba(15,23,42,0.45)] dark:lg:border-white/10 dark:lg:bg-slate-950/94 dark:lg:shadow-[18px_0_48px_-42px_rgba(2,6,23,0.95)]">
+        <div className="flex h-full flex-col">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-teal-700 dark:text-teal-300">
+                Onda Finance
+              </p>
+              <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
+                Painel pessoal
+              </h2>
             </div>
+            <div className="rounded-2xl bg-teal-50 p-3 text-teal-700 dark:bg-teal-400/10 dark:text-teal-200">
+              <CreditCard className="size-5" aria-hidden="true" />
+            </div>
+          </div>
 
-            <div className="mt-6 rounded-[1.6rem] border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/5">
+          <div className="mt-6 rounded-[1.6rem] border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/5">
+            <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
                   Conta ativa
@@ -96,30 +96,32 @@ export function AppShell() {
                 </p>
               </div>
             </div>
+          </div>
 
-            <nav aria-label="Navegação principal" className="mt-6 space-y-2">
-              {navigationItems.map((item) => (
-                <NavigationLink key={item.to} {...item} />
-              ))}
-            </nav>
+          <nav aria-label="Navegação principal" className="mt-6 space-y-2">
+            {navigationItems.map((item) => (
+              <NavigationLink key={item.to} {...item} />
+            ))}
+          </nav>
 
-            <Separator className="my-6 dark:bg-white/10" />
+          <Separator className="my-6 dark:bg-white/10" />
 
-            <div className="rounded-[1.6rem] bg-slate-950 p-4 text-slate-50 dark:bg-white/6">
-              <div className="flex items-start gap-3">
-                <div className="rounded-2xl bg-white/10 p-2">
-                  <Shield className="size-4" aria-hidden="true" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Fluxo validado</p>
-                  <p className="mt-1 text-sm leading-6 text-slate-300">
-                    Sessão mock persistida com segurança em sessionStorage.
-                  </p>
-                </div>
+          <div className="rounded-[1.6rem] bg-slate-950 p-4 text-slate-50 dark:bg-white/6">
+            <div className="flex items-start gap-3">
+              <div className="rounded-2xl bg-white/10 p-2">
+                <Shield className="size-4" aria-hidden="true" />
+              </div>
+              <div>
+                <p className="text-sm font-medium">Fluxo validado</p>
+                <p className="mt-1 text-sm leading-6 text-slate-300">
+                  Sessão mock persistida com segurança em sessionStorage.
+                </p>
               </div>
             </div>
+          </div>
 
-            <div className="mt-4 rounded-[1.6rem] border border-slate-200 bg-white/70 p-4 dark:border-white/10 dark:bg-white/4">
+          <div className="mt-auto">
+            <div className="rounded-[1.6rem] border border-slate-200 bg-white/70 p-4 dark:border-white/10 dark:bg-white/4">
               <div className="flex items-start gap-3">
                 <div className="rounded-2xl bg-slate-950 p-2 text-white dark:bg-teal-400/15 dark:text-teal-200">
                   <MoonStar className="size-4" aria-hidden="true" />
@@ -129,8 +131,8 @@ export function AppShell() {
                     Preferência de tema
                   </p>
                   <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                    O tema pode seguir o sistema ou ser definido manualmente sem
-                    impactar a sessão autenticada.
+                    Alterne entre claro e escuro sem impactar a sessão
+                    autenticada.
                   </p>
                 </div>
               </div>
@@ -148,9 +150,12 @@ export function AppShell() {
               <LogOut className="size-4" aria-hidden="true" />
               Sair
             </Button>
-          </aside>
+          </div>
+        </div>
+      </aside>
 
-          <div className="space-y-4">
+      <div className="px-4 py-4 sm:px-6 sm:py-6 lg:ml-[312px] lg:px-8 lg:py-8">
+        <div className="mx-auto max-w-6xl space-y-4">
             <header className="rounded-[2rem] border border-white/80 bg-white/85 p-4 shadow-[0_25px_70px_-45px_rgba(15,23,42,0.45)] backdrop-blur transition-colors dark:border-white/10 dark:bg-slate-950/80 dark:shadow-[0_20px_60px_-45px_rgba(2,6,23,0.95)] lg:hidden">
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -161,15 +166,18 @@ export function AppShell() {
                     {user?.name}
                   </p>
                 </div>
-                <Button
-                  onClick={handleLogout}
-                  size="sm"
-                  type="button"
-                  variant="outline"
-                >
-                  <LogOut className="size-4" aria-hidden="true" />
-                  Sair
-                </Button>
+                <div className="flex items-center gap-2">
+                  <ThemeToggle compact />
+                  <Button
+                    onClick={handleLogout}
+                    size="sm"
+                    type="button"
+                    variant="outline"
+                  >
+                    <LogOut className="size-4" aria-hidden="true" />
+                    Sair
+                  </Button>
+                </div>
               </div>
               <nav
                 aria-label="Acesso rápido"
@@ -182,7 +190,6 @@ export function AppShell() {
             </header>
 
             <Outlet />
-          </div>
         </div>
       </div>
     </div>
