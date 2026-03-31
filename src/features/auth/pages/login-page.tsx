@@ -4,7 +4,6 @@ import { ShieldCheck, Sparkles, TrendingUp } from "lucide-react";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { LoginForm } from "@/features/auth/components/login-form";
 import { useAuthStore } from "@/features/auth/store/auth-store";
-import { demoCredentials } from "@/mocks/user";
 import { paths } from "@/routes/paths";
 
 const highlights = [
@@ -33,66 +32,71 @@ export function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,#d9f4ef_0%,transparent_38%),linear-gradient(180deg,#f7f8fb_0%,#eef4f6_48%,#f7f9fb_100%)] px-4 py-6 transition-colors dark:bg-[radial-gradient(circle_at_top_left,rgba(45,212,191,0.12)_0%,transparent_34%),linear-gradient(180deg,#07111b_0%,#0c1724_48%,#050b12_100%)] sm:px-6 lg:px-8">
-      <div className="mx-auto grid min-h-[calc(100vh-3rem)] max-w-7xl gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-        <section className="rounded-[2rem] border border-white/75 bg-slate-950 p-8 text-slate-50 shadow-[0_35px_90px_-50px_rgba(15,23,42,0.8)] sm:p-10 lg:p-12">
-          <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-teal-200">
-            Onda Finance
-          </span>
-          <h1 className="mt-6 max-w-xl text-4xl font-semibold tracking-tight sm:text-5xl">
-            Controle seu dinheiro com uma experiência leve, segura e elegante.
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
-            Este mock foi pensado para o teste técnico: fluxo ponta a ponta,
-            validação correta, layout responsivo e base pronta para escalar.
-          </p>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
-            {highlights.map(({ description, icon: Icon, title }) => (
-              <article
-                className="rounded-[1.6rem] border border-white/10 bg-white/5 p-4"
-                key={title}
-              >
-                <div className="flex size-10 items-center justify-center rounded-2xl bg-white/10 text-teal-200">
-                  <Icon className="size-5" aria-hidden="true" />
-                </div>
-                <h2 className="mt-4 text-lg font-medium text-white">{title}</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-300">
-                  {description}
-                </p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="flex items-center">
-          <div className="w-full rounded-[2rem] border border-white/80 bg-white/92 p-8 shadow-[0_35px_90px_-55px_rgba(15,23,42,0.55)] backdrop-blur transition-colors dark:border-white/10 dark:bg-slate-950/82 dark:shadow-[0_35px_90px_-50px_rgba(2,6,23,0.95)] sm:p-10">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-teal-700 dark:text-teal-300">
-                  Login mock
-                </p>
-                <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
-                  Entre para visualizar seu dashboard financeiro.
-                </h2>
-              </div>
-              <ThemeToggle compact />
-            </div>
-
-            <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base">
-              O acesso já vem preenchido para facilitar a avaliação do fluxo.
-              Você também pode editar os campos e testar as validações.
-            </p>
-
-            <div className="mt-6 rounded-[1.6rem] border border-teal-100 bg-teal-50 p-4 text-sm text-teal-900 dark:border-teal-400/15 dark:bg-teal-400/10 dark:text-teal-100">
-              <p className="font-medium">Credenciais mock</p>
-              <p className="mt-1 break-all text-teal-800 dark:text-teal-100">
-                {demoCredentials.email} • {demoCredentials.password}
+    <main className="min-h-screen bg-[linear-gradient(180deg,#e9f3f5_0%,#f5f8fb_100%)] transition-colors dark:bg-[linear-gradient(180deg,#050b12_0%,#07111b_100%)]">
+      <div className="min-h-screen w-full lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,30vw)] 2xl:grid-cols-[minmax(0,1fr)_560px]">
+        <section className="flex bg-[#06113b] px-6 py-8 text-slate-50 sm:px-10 sm:py-10 lg:px-12 lg:py-12 xl:px-16 2xl:px-20">
+          <div className="mx-auto flex w-full max-w-[880px] flex-col">
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-2xl font-semibold tracking-tight text-white">
+                Onda Finance
               </p>
             </div>
 
-            <div className="mt-8">
-              <LoginForm />
+            <div className="mt-28 max-w-[720px]">
+              <h1 className="max-w-[640px] text-5xl font-semibold tracking-tight text-white sm:text-6xl 2xl:max-w-[700px] 2xl:text-[4.5rem] 2xl:leading-[0.98]">
+                Excelência institucional, navegação sob medida.
+              </h1>
+              <p className="mt-6 max-w-[620px] text-base leading-8 text-slate-300 sm:text-xl">
+                Gerencie ativos globais com a infraestrutura robusta que seu
+                portfólio exige e a clareza que você merece.
+              </p>
+            </div>
+
+            <div className="mt-10 grid max-w-[860px] gap-4 md:grid-cols-3">
+              {highlights.map(({ description, icon: Icon, title }) => (
+                <article
+                  className="rounded-[1.6rem] border border-white/8 bg-white/6 p-5 backdrop-blur"
+                  key={title}
+                >
+                  <div className="flex size-11 items-center justify-center rounded-2xl bg-[#102452] text-teal-300">
+                    <Icon className="size-5" aria-hidden="true" />
+                  </div>
+                  <h2 className="mt-5 text-[1.35rem] font-semibold leading-tight text-white">
+                    {title}
+                  </h2>
+                  <p className="mt-3 text-sm leading-7 text-slate-300">
+                    {description}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="flex bg-white px-6 py-8 transition-colors dark:bg-[#07111b] sm:px-10 sm:py-10 lg:border-l lg:border-slate-200/80 lg:px-12 lg:py-12 dark:lg:border-white/10">
+          <div className="mx-auto flex w-full max-w-md flex-col xl:max-w-lg">
+            <div className="flex justify-end">
+              <ThemeToggle compact />
+            </div>
+
+            <div className="mt-12">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-teal-700 dark:text-teal-300">
+                  Acesso seguro
+                </p>
+                <h2 className="mt-4 max-w-sm text-4xl font-semibold tracking-tight text-slate-950 dark:text-slate-50 sm:text-5xl">
+                  Entre para acessar sua plataforma financeira.
+                </h2>
+              </div>
+
+              <p className="mt-4 max-w-md text-base leading-8 text-slate-600 dark:text-slate-300">
+                Use o ambiente mock para validar o fluxo com a estética e a
+                consistência de um painel financeiro corporativo.
+              </p>
+
+              <div className="mt-8">
+                <LoginForm />
+              </div>
             </div>
           </div>
         </section>

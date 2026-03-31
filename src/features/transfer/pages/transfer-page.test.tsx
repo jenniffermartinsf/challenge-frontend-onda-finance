@@ -17,7 +17,7 @@ describe("transfer flow", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /entre para visualizar seu dashboard financeiro/i,
+        name: /entre para acessar sua plataforma financeira/i,
       }),
     ).toBeInTheDocument();
 
