@@ -9,6 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/features/auth/store/auth-store";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "@/features/feedback/store/toast-store";
 import { getApiErrorMessage } from "@/lib/axios";
 import { demoCredentials } from "@/mocks/user";
 import { paths } from "@/routes/paths";
@@ -45,6 +49,10 @@ export function LoginForm() {
   async function onSubmit(values: LoginFormValues) {
     try {
       await login(values);
+      showSuccessToast(
+        "Login realizado",
+        "Sessão mock iniciada com sucesso. Redirecionando para o dashboard.",
+      );
 
       const state = location.state as LocationState | null;
       const nextPath =
@@ -56,9 +64,12 @@ export function LoginForm() {
         replace: true,
       });
     } catch (error) {
+      const message = getApiErrorMessage(error, "Não foi possível autenticar.");
+
       setError("root", {
-        message: getApiErrorMessage(error, "Não foi possível autenticar."),
+        message,
       });
+      showErrorToast("Falha na autenticação", message);
     }
   }
 
@@ -79,7 +90,7 @@ export function LoginForm() {
             aria-describedby={errors.email ? "email-error" : "email-hint"}
             aria-invalid={Boolean(errors.email)}
             autoComplete="email"
-            className="h-11 rounded-xl border-slate-200 bg-white pl-10"
+            className="h-11 rounded-xl border-slate-200 bg-white pl-10 dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-50"
             id="email"
             placeholder="voce@empresa.com"
             type="email"
@@ -110,7 +121,7 @@ export function LoginForm() {
             }
             aria-invalid={Boolean(errors.password)}
             autoComplete="current-password"
-            className="h-11 rounded-xl border-slate-200 bg-white pl-10"
+            className="h-11 rounded-xl border-slate-200 bg-white pl-10 dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-50"
             id="password"
             type="password"
             {...register("password")}
@@ -142,7 +153,7 @@ export function LoginForm() {
       ) : null}
 
       <Button
-        className="h-11 w-full rounded-xl bg-slate-950 text-white hover:bg-slate-800"
+        className="h-11 w-full rounded-xl bg-slate-950 text-white hover:bg-slate-800 dark:bg-teal-300 dark:text-slate-950 dark:hover:bg-teal-200"
         disabled={isSubmitting}
         type="submit"
       >
