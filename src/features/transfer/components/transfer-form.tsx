@@ -1,6 +1,6 @@
-import type { FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderCircle, SendHorizonal } from "lucide-react";
+import { AlertTriangle, LoaderCircle, SendHorizonal } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -8,26 +8,75 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import type { Transaction } from "@/features/dashboard/types";
 import { useTransfer } from "@/features/transfer/hooks/use-transfer";
 import {
   transferSchema,
   type TransferFormValues,
+  type TransferPayload,
 } from "@/features/transfer/schemas/transfer-schema";
 import { getApiErrorMessage } from "@/lib/axios";
 import { formatCurrency } from "@/lib/utils";
 
 type TransferFormProps = {
   availableBalance: number;
+  recentTransactions: Transaction[];
 };
 
-export function TransferForm({ availableBalance }: TransferFormProps) {
+type DuplicateTransferWarning = {
+  payload: TransferPayload;
+  transaction: Transaction;
+};
+
+function normalizeText(value: string) {
+  return value.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function isSameDay(left: string, right: Date) {
+  const leftDate = new Date(left);
+
+  return (
+    leftDate.getFullYear() === right.getFullYear() &&
+    leftDate.getMonth() === right.getMonth() &&
+    leftDate.getDate() === right.getDate()
+  );
+}
+
+function findDuplicateTransfer(
+  payload: TransferPayload,
+  recentTransactions: Transaction[],
+) {
+  const normalizedRecipient = normalizeText(payload.recipientName);
+  const today = new Date();
+
+  return recentTransactions.find((transaction) => {
+    if (transaction.direction !== "debit" || !transaction.accountNumber) {
+      return false;
+    }
+
+    return (
+      normalizeText(transaction.counterparty) === normalizedRecipient &&
+      transaction.accountNumber === payload.accountNumber &&
+      Number(transaction.amount.toFixed(2)) === Number(payload.amount.toFixed(2)) &&
+      isSameDay(transaction.createdAt, today)
+    );
+  });
+}
+
+export function TransferForm({
+  availableBalance,
+  recentTransactions,
+}: TransferFormProps) {
   const transferMutation = useTransfer();
+  const [duplicateWarning, setDuplicateWarning] =
+    useState<DuplicateTransferWarning | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<TransferFormValues>({
     resolver: zodResolver(transferSchema),
     defaultValues: {
@@ -38,13 +87,57 @@ export function TransferForm({ availableBalance }: TransferFormProps) {
     },
   });
 
-  async function onSubmit(values: TransferFormValues) {
+  const watchedValues = watch([
+    "recipientName",
+    "accountNumber",
+    "amount",
+    "description",
+  ]);
+
+  useEffect(() => {
+    if (!duplicateWarning) {
+      return;
+    }
+
+    const [recipientName, accountNumber, amount, description] = watchedValues;
+
+    const hasChanged =
+      normalizeText(String(recipientName ?? "")) !==
+        normalizeText(duplicateWarning.payload.recipientName) ||
+      String(accountNumber ?? "").trim() !== duplicateWarning.payload.accountNumber ||
+      Number(amount ?? 0) !== duplicateWarning.payload.amount ||
+      String(description ?? "").trim() !==
+        (duplicateWarning.payload.description ?? "");
+
+    if (hasChanged) {
+      setDuplicateWarning(null);
+    }
+  }, [duplicateWarning, watchedValues]);
+
+  async function executeTransfer(payload: TransferPayload) {
     try {
-      await transferMutation.mutateAsync(transferSchema.parse(values));
+      setDuplicateWarning(null);
+      await transferMutation.mutateAsync(payload);
       reset();
     } catch {
       return;
     }
+  }
+
+  function onSubmit(values: TransferFormValues) {
+    const payload = transferSchema.parse(values);
+    const duplicateTransfer = findDuplicateTransfer(payload, recentTransactions);
+
+    if (duplicateTransfer) {
+      setDuplicateWarning({
+        payload,
+        transaction: duplicateTransfer,
+      });
+
+      return;
+    }
+
+    void executeTransfer(payload);
   }
 
   function handleTransferSubmit(event: FormEvent<HTMLFormElement>) {
@@ -67,6 +160,54 @@ export function TransferForm({ availableBalance }: TransferFormProps) {
         </div>
 
         <form className="space-y-5" noValidate onSubmit={handleTransferSubmit}>
+          {duplicateWarning ? (
+            <div
+              className="rounded-[1.6rem] border border-amber-300/60 bg-amber-50 px-4 py-4 text-sm text-amber-950 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-100"
+              role="alert"
+            >
+              <div className="flex items-start gap-3">
+                <div className="rounded-2xl bg-amber-500/15 p-2 text-amber-700 dark:text-amber-200">
+                  <AlertTriangle className="size-4" aria-hidden="true" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium">
+                    Transferência semelhante identificada hoje
+                  </p>
+                  <p className="mt-2 leading-6">
+                    Já existe uma transferência para{" "}
+                    <strong>{duplicateWarning.transaction.counterparty}</strong>{" "}
+                    no valor de{" "}
+                    <strong>
+                      {formatCurrency(duplicateWarning.transaction.amount)}
+                    </strong>{" "}
+                    para a conta{" "}
+                    <strong>{duplicateWarning.transaction.accountNumber}</strong>.
+                    Deseja continuar mesmo assim?
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <Button
+                      className="rounded-xl"
+                      onClick={() => setDuplicateWarning(null)}
+                      type="button"
+                      variant="outline"
+                    >
+                      Revisar dados
+                    </Button>
+                    <Button
+                      className="rounded-xl bg-amber-600 text-white hover:bg-amber-700 dark:bg-amber-300 dark:text-slate-950 dark:hover:bg-amber-200"
+                      onClick={() =>
+                        void executeTransfer(duplicateWarning.payload)
+                      }
+                      type="button"
+                    >
+                      Continuar mesmo assim
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
           <div className="grid gap-5 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="recipientName">Nome do destinatário</Label>
@@ -138,7 +279,10 @@ export function TransferForm({ availableBalance }: TransferFormProps) {
                 {errors.amount.message}
               </p>
             ) : (
-              <p className="text-sm text-slate-500" id="amount-hint">
+              <p
+                className="text-sm text-slate-500 dark:text-slate-400"
+                id="amount-hint"
+              >
                 Transferências mock são validadas também no servidor simulado.
               </p>
             )}
@@ -165,7 +309,10 @@ export function TransferForm({ availableBalance }: TransferFormProps) {
                 {errors.description.message}
               </p>
             ) : (
-              <p className="text-sm text-slate-500" id="description-hint">
+              <p
+                className="text-sm text-slate-500 dark:text-slate-400"
+                id="description-hint"
+              >
                 Esta informação aparece no histórico para facilitar a
                 conferência.
               </p>

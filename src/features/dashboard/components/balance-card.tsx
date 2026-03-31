@@ -44,11 +44,11 @@ export function BalanceCard({ summary }: BalanceCardProps) {
             </p>
           </div>
           <div className="rounded-[1.6rem] border border-white/10 bg-white/8 p-5">
-            <div className="flex items-center gap-2 text-amber-100">
+            <div className="flex items-center gap-2 text-rose-200">
               <ArrowDownRight className="size-4" aria-hidden="true" />
               <span className="text-sm font-medium">Saídas do mês</span>
             </div>
-            <p className="mt-4 text-2xl font-semibold">
+            <p className="mt-4 text-2xl font-semibold text-rose-50 dark:text-rose-100">
               {formatCurrency(summary.monthlyExpenses)}
             </p>
           </div>

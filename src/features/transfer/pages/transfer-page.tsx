@@ -18,7 +18,10 @@ export function TransferPage() {
       />
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
-        <TransferForm availableBalance={data?.balance ?? 0} />
+        <TransferForm
+          availableBalance={data?.balance ?? 0}
+          recentTransactions={data?.recentTransactions ?? []}
+        />
 
         <Card className="rounded-[2rem] border border-white/80 bg-white/90 shadow-[0_30px_80px_-55px_rgba(15,23,42,0.45)] backdrop-blur transition-colors dark:border-white/10 dark:bg-slate-950/82 dark:shadow-[0_25px_70px_-45px_rgba(2,6,23,0.95)]">
           <CardContent className="space-y-5 p-6">
@@ -60,6 +63,15 @@ export function TransferPage() {
                 <dd className="mt-1 text-sm leading-6 text-slate-700 dark:text-slate-300">
                   A listagem de transações é invalidada automaticamente via
                   React Query.
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                  Alerta preventivo
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-slate-700 dark:text-slate-300">
+                  O fluxo avisa quando uma transferência com mesmo destinatário,
+                  conta e valor já foi feita no dia.
                 </dd>
               </div>
             </dl>

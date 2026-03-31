@@ -37,7 +37,7 @@ export function TransactionList({ transactions }: TransactionListProps) {
                         "flex size-11 shrink-0 items-center justify-center rounded-2xl",
                         isCredit
                           ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-400/12 dark:text-emerald-300"
-                          : "bg-slate-950 text-white dark:bg-white dark:text-slate-950",
+                          : "bg-rose-50 text-rose-700 dark:bg-rose-400/12 dark:text-rose-300",
                       )}
                     >
                       {isCredit ? (
@@ -70,7 +70,7 @@ export function TransactionList({ transactions }: TransactionListProps) {
                         "text-base font-semibold",
                         isCredit
                           ? "text-emerald-700 dark:text-emerald-300"
-                          : "text-slate-950 dark:text-slate-50",
+                          : "text-rose-700 dark:text-rose-300",
                       )}
                     >
                       {isCredit ? "+" : "-"}
