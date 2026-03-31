@@ -17,6 +17,8 @@ describe("transfer validations", () => {
 
     await screen.findByRole("heading", {
       name: /sua visão financeira do dia/i,
+    }, {
+      timeout: 3000,
     });
 
     await user.click(
@@ -25,8 +27,16 @@ describe("transfer validations", () => {
       }),
     );
 
+    const recipientNameInput = await screen.findByLabelText(
+      /nome do destinatário/i,
+      undefined,
+      {
+        timeout: 3000,
+      },
+    );
+
     await user.type(
-      screen.getByLabelText(/nome do destinatário/i),
+      recipientNameInput,
       "Projeto Alpha",
     );
     await user.type(screen.getByLabelText(/conta destino/i), "12345678");

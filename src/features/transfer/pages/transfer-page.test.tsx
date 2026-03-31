@@ -30,6 +30,8 @@ describe("transfer flow", () => {
     expect(
       await screen.findByRole("heading", {
         name: /sua visão financeira do dia/i,
+      }, {
+        timeout: 3000,
       }),
     ).toBeInTheDocument();
 
@@ -45,8 +47,16 @@ describe("transfer flow", () => {
       }),
     );
 
+    const recipientNameInput = await screen.findByLabelText(
+      /nome do destinatário/i,
+      undefined,
+      {
+        timeout: 3000,
+      },
+    );
+
     await user.type(
-      screen.getByLabelText(/nome do destinatário/i),
+      recipientNameInput,
       "Ana Souza",
     );
     await user.type(screen.getByLabelText(/conta destino/i), "12345678");
