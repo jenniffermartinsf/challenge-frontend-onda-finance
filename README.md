@@ -4,8 +4,6 @@
 
 Deploy: [challenge-frontend-onda-finance.vercel.app/login](https://challenge-frontend-onda-finance.vercel.app/login)
 
-Repositório: [github.com/jenniffermartinsf/challenge-frontend-onda-finance](https://github.com/jenniffermartinsf/challenge-frontend-onda-finance)
-
 </div>
 
 Aplicação web desenvolvida para o teste prático da Onda Finance com foco em clareza, UX limpa, consistência visual, validação correta, fluxo ponta a ponta e base escalável para manutenção futura.
@@ -14,20 +12,20 @@ Aplicação web desenvolvida para o teste prático da Onda Finance com foco em c
 
 ### Login
 
-| Light | Dark |
-| --- | --- |
+| Light                                                            | Dark                                                             |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- |
 | ![Tela de login no tema claro](docs/screenshots/login-light.png) | ![Tela de login no tema escuro](docs/screenshots/login-dark.png) |
 
 ### Dashboard
 
-| Light | Dark |
-| --- | --- |
+| Light                                                            | Dark                                                             |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- |
 | ![Dashboard no tema claro](docs/screenshots/dashboard-light.png) | ![Dashboard no tema escuro](docs/screenshots/dashboard-dark.png) |
 
 ### Transferência
 
-| Light | Dark |
-| --- | --- |
+| Light                                                                       | Dark                                                                        |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | ![Tela de transferência no tema claro](docs/screenshots/transfer-light.png) | ![Tela de transferência no tema escuro](docs/screenshots/transfer-dark.png) |
 
 ## Principais recursos
