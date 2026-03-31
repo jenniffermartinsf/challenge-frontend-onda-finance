@@ -99,9 +99,9 @@ export function LoginForm() {
           <CircleAlert className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
           <div className="min-w-0">
             <p className="leading-6">
-              Certifique-se de que está acessando o ambiente oficial de
-              avaliação. O login mock já vem preenchido com{" "}
-              <span className="font-semibold">{demoCredentials.email}</span>.
+              Certifique-se de que está acessando o domínio oficial{" "}
+              <span className="font-semibold">onda.finance</span> para sua
+              segurança.
             </p>
           </div>
         </div>

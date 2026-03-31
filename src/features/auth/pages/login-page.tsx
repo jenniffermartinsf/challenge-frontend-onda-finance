@@ -55,16 +55,16 @@ export function LoginPage() {
             <div className="mt-10 grid max-w-[860px] gap-4 md:grid-cols-3">
               {highlights.map(({ description, icon: Icon, title }) => (
                 <article
-                  className="rounded-[1.6rem] border border-white/8 bg-white/6 p-5 backdrop-blur"
+                  className="min-w-0 rounded-[1.6rem] border border-white/8 bg-white/6 p-5 backdrop-blur"
                   key={title}
                 >
                   <div className="flex size-11 items-center justify-center rounded-2xl bg-[#102452] text-teal-300">
                     <Icon className="size-5" aria-hidden="true" />
                   </div>
-                  <h2 className="mt-5 text-[1.35rem] font-semibold leading-tight text-white">
+                  <h2 className="mt-5 break-words text-base leading-[1.15] font-semibold text-white">
                     {title}
                   </h2>
-                  <p className="mt-3 text-sm leading-7 text-slate-300">
+                  <p className="mt-3 text-[0.875rem] leading-7 text-slate-300">
                     {description}
                   </p>
                 </article>
@@ -88,11 +88,6 @@ export function LoginPage() {
                   Entre para acessar sua plataforma financeira.
                 </h2>
               </div>
-
-              <p className="mt-4 max-w-md text-base leading-8 text-slate-600 dark:text-slate-300">
-                Use o ambiente mock para validar o fluxo com a estética e a
-                consistência de um painel financeiro corporativo.
-              </p>
 
               <div className="mt-8">
                 <LoginForm />
