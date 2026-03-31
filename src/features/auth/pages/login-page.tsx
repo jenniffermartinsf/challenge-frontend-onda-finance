@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { ShieldCheck, Sparkles, TrendingUp } from "lucide-react";
 
+import { ThemeToggle } from "@/components/common/theme-toggle";
 import { LoginForm } from "@/features/auth/components/login-form";
 import { useAuthStore } from "@/features/auth/store/auth-store";
 import { demoCredentials } from "@/mocks/user";
@@ -32,7 +33,7 @@ export function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,#d9f4ef_0%,transparent_38%),linear-gradient(180deg,#f7f8fb_0%,#eef4f6_48%,#f7f9fb_100%)] px-4 py-6 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,#d9f4ef_0%,transparent_38%),linear-gradient(180deg,#f7f8fb_0%,#eef4f6_48%,#f7f9fb_100%)] px-4 py-6 transition-colors dark:bg-[radial-gradient(circle_at_top_left,rgba(45,212,191,0.12)_0%,transparent_34%),linear-gradient(180deg,#07111b_0%,#0c1724_48%,#050b12_100%)] sm:px-6 lg:px-8">
       <div className="mx-auto grid min-h-[calc(100vh-3rem)] max-w-7xl gap-4 lg:grid-cols-[1.1fr_0.9fr]">
         <section className="rounded-[2rem] border border-white/75 bg-slate-950 p-8 text-slate-50 shadow-[0_35px_90px_-50px_rgba(15,23,42,0.8)] sm:p-10 lg:p-12">
           <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-teal-200">
@@ -65,21 +66,27 @@ export function LoginPage() {
         </section>
 
         <section className="flex items-center">
-          <div className="w-full rounded-[2rem] border border-white/80 bg-white/92 p-8 shadow-[0_35px_90px_-55px_rgba(15,23,42,0.55)] backdrop-blur sm:p-10">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-teal-700">
-              Login mock
-            </p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950">
-              Entre para visualizar seu dashboard financeiro.
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
+          <div className="w-full rounded-[2rem] border border-white/80 bg-white/92 p-8 shadow-[0_35px_90px_-55px_rgba(15,23,42,0.55)] backdrop-blur transition-colors dark:border-white/10 dark:bg-slate-950/82 dark:shadow-[0_35px_90px_-50px_rgba(2,6,23,0.95)] sm:p-10">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-teal-700 dark:text-teal-300">
+                  Login mock
+                </p>
+                <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
+                  Entre para visualizar seu dashboard financeiro.
+                </h2>
+              </div>
+              <ThemeToggle compact />
+            </div>
+
+            <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base">
               O acesso já vem preenchido para facilitar a avaliação do fluxo.
               Você também pode editar os campos e testar as validações.
             </p>
 
-            <div className="mt-6 rounded-[1.6rem] border border-teal-100 bg-teal-50 p-4 text-sm text-teal-900">
+            <div className="mt-6 rounded-[1.6rem] border border-teal-100 bg-teal-50 p-4 text-sm text-teal-900 dark:border-teal-400/15 dark:bg-teal-400/10 dark:text-teal-100">
               <p className="font-medium">Credenciais mock</p>
-              <p className="mt-1 break-all text-teal-800">
+              <p className="mt-1 break-all text-teal-800 dark:text-teal-100">
                 {demoCredentials.email} • {demoCredentials.password}
               </p>
             </div>
