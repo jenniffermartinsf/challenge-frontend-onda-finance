@@ -22,8 +22,8 @@ export function DashboardPage() {
           title="Sua visão financeira está carregando"
         />
         <div className="grid gap-4">
-          <div className="h-64 animate-pulse rounded-[2rem] bg-slate-200/70" />
-          <div className="h-96 animate-pulse rounded-[2rem] bg-slate-200/70" />
+          <div className="h-64 animate-pulse rounded-[2rem] bg-slate-200/70 dark:bg-white/8" />
+          <div className="h-96 animate-pulse rounded-[2rem] bg-slate-200/70 dark:bg-white/8" />
         </div>
       </div>
     );
@@ -37,8 +37,8 @@ export function DashboardPage() {
           eyebrow="Dashboard"
           title="Não foi possível exibir seus dados"
         />
-        <div className="rounded-[2rem] border border-destructive/20 bg-white p-6 shadow-[0_25px_70px_-50px_rgba(15,23,42,0.45)]">
-          <p className="text-sm leading-6 text-slate-600">
+        <div className="rounded-[2rem] border border-destructive/20 bg-white p-6 shadow-[0_25px_70px_-50px_rgba(15,23,42,0.45)] dark:bg-slate-950/82">
+          <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
             {getApiErrorMessage(error, "Tente novamente em instantes.")}
           </p>
           <Button className="mt-4 rounded-xl" onClick={() => void refetch()}>
@@ -55,7 +55,7 @@ export function DashboardPage() {
         actions={
           <div className="flex flex-wrap gap-3">
             <Button
-              className="rounded-xl"
+              className="rounded-xl dark:border-white/10 dark:bg-transparent dark:text-slate-100 dark:hover:bg-white/5"
               onClick={() => void refetch()}
               type="button"
               variant="outline"
@@ -68,7 +68,7 @@ export function DashboardPage() {
             </Button>
             <Button
               asChild
-              className="rounded-xl bg-slate-950 text-white hover:bg-slate-800"
+              className="rounded-xl bg-slate-950 text-white hover:bg-slate-800 dark:bg-teal-300 dark:text-slate-950 dark:hover:bg-teal-200"
             >
               <Link to={paths.transfer}>
                 Nova transferência

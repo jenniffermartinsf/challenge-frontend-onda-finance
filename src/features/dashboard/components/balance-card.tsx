@@ -10,7 +10,7 @@ type BalanceCardProps = {
 
 export function BalanceCard({ summary }: BalanceCardProps) {
   return (
-    <Card className="overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(135deg,#0f172a_0%,#134e4a_100%)] text-white shadow-[0_35px_80px_-50px_rgba(15,23,42,0.85)]">
+    <Card className="overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(135deg,#0f172a_0%,#134e4a_100%)] text-white shadow-[0_35px_80px_-50px_rgba(15,23,42,0.85)] dark:border-white/10 dark:bg-[linear-gradient(135deg,#07111b_0%,#0f3d3a_100%)]">
       <CardContent className="space-y-8 p-6 sm:p-8">
         <div className="flex items-start justify-between gap-4">
           <div>
